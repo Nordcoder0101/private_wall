@@ -1,0 +1,53 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>The Wall</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href={{ url_for('static', filename='style.css') }} />
+</head>
+<body>
+  <header>
+    <h1 class='coding_dojo'>Coding Dojo Wall <span class='welcome'>Welcome, {{current_user_name}}!! <a class="logout" href="/logout">Log Out</a></span><h1>
+    
+    
+  </header>
+   <div>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class = flashes>
+          {% for category, message in messages %}
+              <li class ="{{category}}">{{message}}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+  {% endwith %}
+  </div>
+  <div class="display_your_messages">
+    
+    <h3> {{message_length}} Message(s) for You</h3>
+    {% for message in messages %}
+      {% if message['sent_to_id'] == session['logged_in_user'] %}
+      
+      <p class="user_said">{{message['first_name']}} said: <span  class = "message_display_content">{{message['content']}} </span> <a href = "/messages/{{message['id']}}/delete">delete</a></p>
+      
+      
+      {% endif %}
+    {% endfor %}
+      
+
+  </div>
+
+  <div class = "new_message_form">
+    <h1> Send Messages</h1>
+    {% for user in users %}
+      {% if user['id'] != session['logged_in_user'] %}
+    <form action="/post_message" method="POST">
+      <span> {{user['name']}}</span>
+      <p class = "message_to">{{user['first_name']}} {{user['last_name']}}</p><textarea type ="text" name="content"></textarea>
+      <input type = "hidden" name = "recipiant" value={{user['id']}}>
+      <input type = 'hidden' name = {{session['logged_in_user']}}>
+      <input class="submit_message" type = "submit" value="Send">
+    </form>
+      {% endif %}
+    {% endfor %}

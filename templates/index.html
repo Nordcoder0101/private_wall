@@ -1,0 +1,40 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>The Wall</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href={{ url_for('static', filename='style.css') }} />
+</head>
+<body>
+  <div>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class = flashes>
+          {% for category, message in messages %}
+              <li class ="{{category}}">{{message}}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+  {% endwith %}
+  </div>
+
+  <div class = "new_user">
+    <form action="/register_account" method="POST">
+      <p>First name: <input type="text" name="first_name" placeholder="First Name"></p>
+      <p>Last name: <input type="text" name="last_name" placeholder="Last Name"></p>
+      <p>Email: <input type="text" name="email" placeholder="stuff@thing.com"></p>
+      <p>Password: <input type="text" name="password" placeholder="Min 8 Character"></p>
+      <p>Verify Password: <input type="text" name="vpassword" placeholder="Min 8 Character"></p>
+      <input type="submit" value="Create Account">
+    </form>
+  </div> 
+  <div class="login">
+    <form action="/login" method="POST">
+      <p>Email: <input type="text" name="email" placeholder="someone@somewhere.com"></p>
+      <p>Password: <input type="text" name="password" placeholder="Min 8 Character"></p>
+      <input type="submit" value="Login">
+    </form>  
+  </div>  
+</body>
+</html>
